@@ -258,6 +258,31 @@ canvas#scratchCanvas {
   .card { transform: translate(-50%, -50%) scale(calc(var(--mobile-scale, 1) * 0.92)); }
   .card.shown { transform: translate(-50%, -50%) scale(var(--mobile-scale, 1)); }
 }
+
+/* ===== PANTALLA COMPLETA: la segunda hoja cubre todo el celular ===== */
+@media (max-width: 600px) {
+  html, body, .stage {
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+}
+
+/* ===== CORRECCIÓN FINAL MÓVIL: tarjeta centrada después de abrir el sobre ===== */
+@media (max-width: 600px) {
+  .card,
+  .card.shown {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: 380px !important;
+    height: 608px !important;
+    transform: translate(-50%, -50%) scale(var(--screen-scale, 1)) !important;
+    transform-origin: center center !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -428,7 +453,8 @@ canvas#scratchCanvas {
   function fitCard(){
     const card = document.querySelector('.card');
     if (!card || window.innerWidth > 600) return;
-    const scale = Math.min(window.innerWidth / 380, window.innerHeight / 608);
+    const scale = Math.max(window.innerWidth / 380, window.innerHeight / 608);
+    card.style.setProperty('--screen-scale', scale);
     card.style.setProperty('--mobile-scale', scale);
     if (card.classList.contains('shown')) {
       card.style.transform = `translate(-50%, -50%) scale(${scale})`;
@@ -442,5 +468,21 @@ canvas#scratchCanvas {
   setTimeout(fitCard, 50);
 })();
 </script>
+
+<script>
+(function () {
+  function fitCard() {
+    var vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    var vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    var scale = Math.min((vw - 12) / 380, (vh - 12) / 608, 1);
+    document.documentElement.style.setProperty('--card-scale', Math.max(scale, 0.1));
+  }
+  fitCard();
+  window.addEventListener('resize', fitCard, { passive: true });
+  window.addEventListener('orientationchange', fitCard, { passive: true });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fitCard, { passive: true });
+})();
+</script>
+
 </body>
 </html>
