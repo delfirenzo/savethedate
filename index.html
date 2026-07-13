@@ -385,7 +385,7 @@ canvas#scratchCanvas {
   function scratchAt(x,y){
     ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
-    ctx.arc(x,y,13,0,Math.PI*2);
+    ctx.arc(x,y,28,0,Math.PI*2);
     ctx.fill();
     ctx.globalCompositeOperation = 'source-over';
     label.style.opacity = 0.3;
@@ -429,7 +429,7 @@ canvas#scratchCanvas {
     }
   }
 
-  function start(e){ scratching = true; var p = getPos(e); scratchAt(p.x,p.y); e.preventDefault(); }
+  function start(e){ scratching = true; var p = getPos(e); scratchAt(p.x,p.y); checkProgress(); e.preventDefault(); }
   function move(e){ if(!scratching) return; var p = getPos(e); scratchAt(p.x,p.y); checkProgress(); e.preventDefault(); }
   function end(){ scratching = false; checkProgress(); }
 
