@@ -502,5 +502,23 @@ canvas#scratchCanvas {
 })();
 </script>
 
+
+<script>
+/* Detiene la música al cerrar, salir u ocultar la página */
+(function(){
+  function stopWeddingMusic(){
+    var music = document.getElementById('weddingMusic');
+    if (music) {
+      music.pause();
+      music.currentTime = 0;
+    }
+  }
+  window.addEventListener('pagehide', stopWeddingMusic);
+  window.addEventListener('beforeunload', stopWeddingMusic);
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) stopWeddingMusic();
+  });
+})();
+</script>
 </body>
 </html>
